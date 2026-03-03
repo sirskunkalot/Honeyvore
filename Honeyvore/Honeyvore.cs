@@ -32,13 +32,14 @@ namespace Honeyvore
                 { "honeymessage4", "Error 404: Honey not found" },
                 { "honeymessage5", "{item_name} lacks honey" },
             });
-
-            ItemManager.OnItemsRegistered += OnItemsRegistered;
+            
+            // Late event to catch mod items
+            MinimapManager.OnVanillaMapAvailable += BuildHoneyItemsCache; 
 
             Harmony.CreateAndPatchAll(typeof(Honeyvore), PluginGUID);
         }
 
-        private static void OnItemsRegistered()
+        private static void BuildHoneyItemsCache()
         {
             // Get all prefabs and find all CookingStation and Fermenter conversions
             var prefabs = new HashSet<GameObject>(ZNetScene.instance.m_prefabs);
