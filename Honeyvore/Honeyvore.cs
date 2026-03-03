@@ -28,9 +28,14 @@ namespace Honeyvore
             {
                 { "honeymessage1", "There is no honey in {item_name}, hun" },
                 { "honeymessage2", "No beeswax, no {item_name}" },
-                { "honeymessage3", "You can't find the Honey in {item_name}" },
+                { "honeymessage3", "No honey, no love" },
                 { "honeymessage4", "Error 404: Honey not found" },
-                { "honeymessage5", "{item_name} lacks honey" },
+                { "honeymessage5", "{item_name}.getHoney() returned null" },
+                { "honeymessage6", "Un-bee-lievable. No honey in {item_name}" },
+                { "honeymessage7", "You stare at {item_name}. It stares back. No honey. You walk away" },
+                { "honeymessage8", "Player is not happy, no honey in {item_name}" },
+                { "honeymessage9", "Valhalla has honey. {item_name} does not" },
+                { "honeymessage10", "{item_name}? Honey, please" },
             });
             
             // Late event to catch mod items
@@ -70,14 +75,14 @@ namespace Honeyvore
             
             // Build HoneyItem cache
             // Add honey to the HashSet and loop as long as we find something
-            // made out of honey or its descends
+            // made out of honey or its descends. Start loop again after every find.
             HoneyItems.Clear();
             HoneyItems.Add("$item_honey");
 
-            bool changed = true;
-            while (changed)
+            bool found = true;
+            while (found)
             {
-                changed = false;
+                found = false;
 
                 foreach (var recipe in ObjectDB.instance.m_recipes)
                 {
@@ -89,7 +94,7 @@ namespace Honeyvore
                     {
                         if (HoneyItems.Contains(req.m_resItem.m_itemData.m_shared.m_name))
                         {
-                            changed = HoneyItems.Add(outputName);
+                            found = HoneyItems.Add(outputName);
                             break;
                         }
                     }
@@ -100,7 +105,7 @@ namespace Honeyvore
                     if (HoneyItems.Contains(conversion.fromItem)
                         && HoneyItems.Add(conversion.toItem))
                     {
-                        changed = true;
+                        found = true;
                     }
                 }
             }
@@ -144,6 +149,7 @@ namespace Honeyvore
 
         private static string GetMessage(string itemName)
         {
+            // Only english for now
             // var trans = Localization.GetTranslations(PlatformPrefs.GetString("language"));
             // if (trans.Count == 0)
             // {
