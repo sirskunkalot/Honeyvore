@@ -42,11 +42,10 @@ namespace Honeyvore
         private static void OnItemsRegistered()
         {
             var prefabs = new HashSet<GameObject>(ZNetScene.instance.m_prefabs);
-            var namedPrefabs = new HashSet<GameObject>(ZNetScene.instance.m_namedPrefabs.Values);
-            var combinedPrefabs = prefabs.Union(namedPrefabs).ToList();
-            combinedPrefabs.RemoveAll(prefab => !prefab);
+            prefabs.UnionWith(ZNetScene.instance.m_namedPrefabs.Values);
+            prefabs.Remove(null);
 
-            foreach (var prefab in combinedPrefabs)
+            foreach (var prefab in prefabs)
             {
                 if (prefab.TryGetComponent<CookingStation>(out var cookingStation))
                 {
