@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
@@ -109,9 +108,13 @@ namespace Honeyvore
         [HarmonyPatch(typeof(Player), nameof(Player.CanConsumeItem)), HarmonyPrefix]
         private static bool PrefixPlayerCanConsumeItem(Player __instance, ItemDrop.ItemData item)
         {
-            if (Player.m_localPlayer 
-                && Player.m_localPlayer == __instance
-                && !HoneyItems.Contains(item.m_shared.m_name))
+            if (!Player.m_localPlayer || Player.m_localPlayer != __instance)
+                return true;
+
+            if (item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Consumable)
+                return true;
+
+            if (!HoneyItems.Contains(item.m_shared.m_name))
             {
                 __instance.Message(MessageHud.MessageType.Center, GetMessage(item.m_shared.m_name));
                 return false;
@@ -133,7 +136,5 @@ namespace Honeyvore
             var msg = $"${keys[rand]}";
             return Localization.TryTranslate(msg).Replace("{item_name}", itemName);
         }
-
-        private static bool HasHoney(string itemName) => HoneyItems.Contains(itemName);
     }
 }
