@@ -1,4 +1,4 @@
-﻿# Honeyvore
+# Honeyvore
 Ever looked at a perfectly good Lox Meat Pie and thought "but where's the honey?" Well, now you can live the dream. This mod ensures that your Viking only consumes food and potions that contain honey somewhere in their crafting chain. Because "If it doesn't have honey, it's not worth eating" - Gwen the Shieldmaiden.
 
 ## Installation (manual)
