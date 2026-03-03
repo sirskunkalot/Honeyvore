@@ -5,7 +5,10 @@ Ever looked at a perfectly good Lox Meat Pie and thought "but where's the honey?
 Drop the dll into your BepInEx\plugin folder and embrace the sweet, sweet lifestyle. Beekeeper suit not included.
 
 ## Features
-The mod will block you from eating or drinking anything that has no honey in it's production chain. Or is actually pure honey. That's it.
+The mod will block you from consuming anything that has no honey in it's production chain. Or is actually pure honey. That's it. Will show subjectively semi funny messages while doing so.
 
 ## Changelog
-* v0.0.1: Initial release
+### v0.0.1
+* Initial release
+
+Thanks to EasyBorder for the cover art
