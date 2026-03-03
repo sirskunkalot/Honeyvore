@@ -20,8 +20,8 @@ namespace Honeyvore
         public const string PluginVersion = "0.0.1";
 
         private static CustomLocalization Localization = LocalizationManager.Instance.GetLocalization();
-
-        private static List<(string fromItem, string toItem)> Conversions = new();
+        
+        private static HashSet<string> HoneyItems = new();
 
         private void Awake()
         {
@@ -41,19 +41,19 @@ namespace Honeyvore
 
         private static void OnItemsRegistered()
         {
+            // Get all prefabs and find all CookingStation and Fermenter conversions
             var prefabs = new HashSet<GameObject>(ZNetScene.instance.m_prefabs);
             prefabs.UnionWith(ZNetScene.instance.m_namedPrefabs.Values);
             prefabs.Remove(null);
-
+            
+            var conversions = new List<(string fromItem, string toItem)>();
             foreach (var prefab in prefabs)
             {
                 if (prefab.TryGetComponent<CookingStation>(out var cookingStation))
                 {
                     foreach (var conversion in cookingStation.m_conversion)
                     {
-                        Jotunn.Logger.LogDebug(
-                            $"added from {conversion.m_from.m_itemData.m_shared.m_name} to {conversion.m_to.m_itemData.m_shared.m_name}");
-                        Conversions.Add((conversion.m_from.m_itemData.m_shared.m_name,
+                        conversions.Add((conversion.m_from.m_itemData.m_shared.m_name,
                             conversion.m_to.m_itemData.m_shared.m_name));
                     }
                 }
@@ -62,10 +62,45 @@ namespace Honeyvore
                 {
                     foreach (var conversion in fermenter.m_conversion)
                     {
-                        Jotunn.Logger.LogDebug(
-                            $"added from {conversion.m_from.m_itemData.m_shared.m_name} to {conversion.m_to.m_itemData.m_shared.m_name}");
-                        Conversions.Add((conversion.m_from.m_itemData.m_shared.m_name,
+                        conversions.Add((conversion.m_from.m_itemData.m_shared.m_name,
                             conversion.m_to.m_itemData.m_shared.m_name));
+                    }
+                }
+            }
+            
+            // Build HoneyItem cache
+            // Add honey to the HashSet and loop as long as we find something
+            // made out of honey or its descends
+            HoneyItems.Clear();
+            HoneyItems.Add("$item_honey");
+
+            bool changed = true;
+            while (changed)
+            {
+                changed = false;
+
+                foreach (var recipe in ObjectDB.instance.m_recipes)
+                {
+                    if (recipe.m_item == null) continue;
+                    var outputName = recipe.m_item.m_itemData.m_shared.m_name;
+                    if (HoneyItems.Contains(outputName)) continue;
+
+                    foreach (var req in recipe.m_resources)
+                    {
+                        if (HoneyItems.Contains(req.m_resItem.m_itemData.m_shared.m_name))
+                        {
+                            changed = HoneyItems.Add(outputName);
+                            break;
+                        }
+                    }
+                }
+
+                foreach (var conversion in conversions)
+                {
+                    if (HoneyItems.Contains(conversion.fromItem)
+                        && HoneyItems.Add(conversion.toItem))
+                    {
+                        changed = true;
                     }
                 }
             }
@@ -76,7 +111,7 @@ namespace Honeyvore
         {
             if (Player.m_localPlayer 
                 && Player.m_localPlayer == __instance
-                && !HasHoney(item.m_shared.m_name))
+                && !HoneyItems.Contains(item.m_shared.m_name))
             {
                 __instance.Message(MessageHud.MessageType.Center, GetMessage(item.m_shared.m_name));
                 return false;
@@ -99,35 +134,6 @@ namespace Honeyvore
             return Localization.TryTranslate(msg).Replace("{item_name}", itemName);
         }
 
-        private static bool HasHoney(string itemName)
-        {
-            Jotunn.Logger.LogDebug(itemName);
-            foreach (var conversion in Conversions)
-            {
-                if (conversion.toItem.Equals(itemName, StringComparison.Ordinal)
-                    && !conversion.fromItem.Equals(itemName, StringComparison.Ordinal)
-                    && HasHoney(conversion.fromItem))
-                {
-                    return true;
-                }
-            }
-
-            foreach (var recipe in ObjectDB.instance.m_recipes)
-            {
-                if (recipe.m_item != null
-                    && recipe.m_item.m_itemData.m_shared.m_name.Equals(itemName, StringComparison.Ordinal))
-                {
-                    foreach (var req in recipe.m_resources)
-                    {
-                        if (HasHoney(req.m_resItem.m_itemData.m_shared.m_name))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return itemName.Equals("$item_honey");
-        }
+        private static bool HasHoney(string itemName) => HoneyItems.Contains(itemName);
     }
 }
