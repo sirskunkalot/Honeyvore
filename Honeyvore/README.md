@@ -11,4 +11,4 @@ The mod will block you from consuming anything that has no honey in it's product
 ### v0.0.1
 * Initial release
 
-Thanks to EasyBorder for the cover art
+Thanks to EasyBoarder for the cover art
