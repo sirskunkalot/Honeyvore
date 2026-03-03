@@ -123,6 +123,24 @@ namespace Honeyvore
 
             return true;
         }
+        
+        [HarmonyPatch(typeof(Player), nameof(Player.ConsumeItem)), HarmonyPrefix]
+        private static bool PrefixPlayerConsumeItem(Player __instance, ItemDrop.ItemData item)
+        {
+            if (!Player.m_localPlayer || Player.m_localPlayer != __instance)
+                return true;
+
+            if (item.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Consumable)
+                return true;
+
+            if (!HoneyItems.Contains(item.m_shared.m_name))
+            {
+                __instance.Message(MessageHud.MessageType.Center, GetMessage(item.m_shared.m_name));
+                return false;
+            }
+
+            return true;
+        }
 
         private static string GetMessage(string itemName)
         {
