@@ -16,7 +16,7 @@ namespace Honeyvore
     {
         public const string PluginGUID = "de.sirskunkalot.Honeyvore";
         public const string PluginName = "Honeyvore";
-        public const string PluginVersion = "0.0.1";
+        public const string PluginVersion = "0.0.2";
 
         private static CustomLocalization Localization = LocalizationManager.Instance.GetLocalization();
         
