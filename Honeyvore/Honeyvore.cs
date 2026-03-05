@@ -11,12 +11,11 @@ namespace Honeyvore
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid)]
-    //[NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     internal class Honeyvore : BaseUnityPlugin
     {
         public const string PluginGUID = "de.sirskunkalot.Honeyvore";
         public const string PluginName = "Honeyvore";
-        public const string PluginVersion = "0.0.2";
+        public const string PluginVersion = "0.0.3";
 
         private static CustomLocalization Localization = LocalizationManager.Instance.GetLocalization();
         

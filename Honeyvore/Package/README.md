@@ -12,5 +12,16 @@ The mod will block you from consuming anything that has no honey in it's product
 * Initial release
 ### v0.0.2
 * README fixes
+### v0.0.3
+* Moar README fixes
 
-Thanks to EasyBoarder for the cover art
+## Credits
+Mod created by [Jules](https://github.com/sirskunkalot)
+
+Made with Löve and [Jötunn](https://github.com/Valheim-Modding/Jotunn)
+
+Source at [github](https://github.com/sirskunkalot/ALaCart) - all contributions welcome!
+
+Thanks to [EasyBoarder](https://www.twitch.tv/EasyBoarder) for the cover art
+
+Special thanks to the queen bee [GwenTheShieldmaiden](https://www.twitch.tv/gwentheshieldmaiden) for commissioning this mod. Greetings from your stream sidekick and fellow hive worker :)
