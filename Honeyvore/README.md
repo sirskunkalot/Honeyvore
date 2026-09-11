@@ -14,6 +14,8 @@ The mod will block you from consuming anything that has no honey in it's product
 * README fixes
 ### v0.0.3
 * Moar README fixes
+### v0.0.4
+* Compatible with Valheim 1.0
 
 ## Credits
 Mod created by [Jules](https://github.com/sirskunkalot)

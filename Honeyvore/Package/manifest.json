@@ -1,10 +1,10 @@
 ﻿{
   "name": "Honeyvore",
   "description": "A mod for the honey connoisseur. Forces you to only consume honey and honey based things.",
-  "version_number": "0.0.3",
+  "version_number": "0.0.4",
   "website_url": "https://github.com/sirskunkalot/Honeyvore",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2333",
-    "ValheimModding-Jotunn-2.27.1"
+    "ValheimModding-Jotunn-2.30.0"
   ]
 }
