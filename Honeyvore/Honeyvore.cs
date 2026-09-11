@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 namespace Honeyvore
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-    [BepInDependency(Jotunn.Main.ModGuid)]
+    [BepInDependency(Jotunn.Main.ModGuid, "2.30.0")]
     internal class Honeyvore : BaseUnityPlugin
     {
         public const string PluginGUID = "de.sirskunkalot.Honeyvore";
